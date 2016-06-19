@@ -1,6 +1,7 @@
 #pragma once
 
 
+extern const Uint8 * state;
 class Camera: public Instance {
     public:
         float zoom;
@@ -13,7 +14,7 @@ class Camera: public Instance {
             this->dx = 0.0f;
             this->dy = 0.0f;
             this->dz = 0.0f;
-            this->xrot = -20.0f;
+            this->xrot = 0.0f;
             this->yrot = 0.0f;
             this->zrot = 0.0f;
         }
@@ -21,6 +22,11 @@ class Camera: public Instance {
         void tick(float delta) {
             //z -= 0.01f;
             this->updatePhysics(delta);
+
+            if (state[SDL_SCANCODE_W]) {
+                x -= sin(this->yrot * (M_PI / 180)) * 0.06f;
+                z -= cos(this->yrot * (M_PI / 180)) * 0.06f;
+            }
         }
         void draw(float delta) {
         }
@@ -55,8 +61,13 @@ class Camera: public Instance {
                     dy += friction;
                 }
             }
-            
+
             x += dx * delta;
             y += dy * delta;
+        }
+
+        void mouseMoveEvent(int mouseX, int mouseY, int deltaMouseX, int deltaMouseY) {
+            xrot -= (deltaMouseY * 0.25f);
+            yrot -= (deltaMouseX * 0.25f);
         }
 };

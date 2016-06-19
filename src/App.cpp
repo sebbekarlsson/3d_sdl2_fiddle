@@ -7,6 +7,8 @@ const int WIDTH = 640;
 const int HEIGHT = WIDTH / 16 * 9;
 const int SCALE = 2;
 
+extern const Uint8 * state;
+
 float angle = 0.0;
 
 /**
@@ -15,6 +17,7 @@ float angle = 0.0;
 App::App () {
     this->sceneIndex = 0;
     this->quit = false;
+    this->mouseTrap = SDL_TRUE;
 }
 
 /**
@@ -113,6 +116,23 @@ Scene* App::getCurrentScene() {
     return scenes[sceneIndex];
 }
 
+void App::mouseEvent(int &mouseX, int &mouseY) {
+}
+
+void App::mouseMoveEvent(
+        int &mouseX,
+        int &mouseY,
+        int &deltaMouseX,
+        int &deltaMouseY
+        ) {
+    this->getCurrentScene()->camera->mouseMoveEvent(
+            mouseX,
+            mouseY,
+            deltaMouseX,
+            deltaMouseY
+            );
+}
+
 /**
  * Tick/Update function.
  */
@@ -126,6 +146,20 @@ void App::tick (float delta) {
     scene->tick(delta);
 
     angle += 0.1; if(angle > 360) {angle -= 360;}
+
+    if (SDL_GetMouseState(&this->mouseX, &this->mouseY)) {
+        this->mouseEvent(this->mouseX, this->mouseY);
+    }
+
+    SDL_SetRelativeMouseMode(this->mouseTrap);
+
+    if (state[SDL_SCANCODE_K]) {
+        if (this->mouseTrap == SDL_TRUE) {
+            this->mouseTrap = SDL_FALSE;
+        } else {
+            this->mouseTrap = SDL_TRUE;
+        }
+    }
 }
 
 /**
@@ -142,11 +176,14 @@ void App::draw (float delta) {
     glRotatef(-scene->camera->zrot, 0.0f, 0.0f, 1.0f);
     glTranslatef(-scene->camera->x, -scene->camera->y, -scene->camera->z);
     scene->draw(delta);
-    
+
     float size = 1.0f;
-    
+
 
     glPushMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, 0.0f);
     glTranslatef(-size/2, -size/2, -size/2);
     glRotatef(angle,0.0,1.0,0.0);   // angle, x-axis, y-axis, z-axis
 
@@ -191,6 +228,103 @@ void App::draw (float delta) {
 
 
     glPopMatrix();
+
+
+
+    glPushMatrix();
+    glTranslatef(-size*4, 0.0f, 0.0f);
+    glTranslatef(-size/2, -size/2, -size/2);
+    glRotatef(angle,0.0,1.0,0.0);   // angle, x-axis, y-axis, z-axis
+
+    glBegin(GL_QUADS);
+    // front face
+    glColor3f(1.0,0.0,0.0);
+    glVertex3f(size,size,size);
+    glVertex3f(-size,size,size);
+    glVertex3f(-size,-size,size);
+    glVertex3f(size,-size,size);
+    // left face
+    glColor3f(0.0,1.0,0.0);
+    glVertex3f(-size,size,size);
+    glVertex3f(-size,-size,size);
+    glVertex3f(-size,-size,-size);
+    glVertex3f(-size,size,-size);
+    // back face
+    glColor3f(0.0,0.0,1.0);
+    glVertex3f(size,size,-size);
+    glVertex3f(-size,size,-size);
+    glVertex3f(-size,-size,-size);
+    glVertex3f(size,-size,-size);
+    // right face
+    glColor3f(1.0,1.0,0.0);
+    glVertex3f(size,size,size);
+    glVertex3f(size,-size,size);
+    glVertex3f(size,-size,-size);
+    glVertex3f(size,size,-size);
+    // top face
+    glColor3f(1.0,0.0,1.0);
+    glVertex3f(size,size,size);
+    glVertex3f(-size,size,size);
+    glVertex3f(-size,size,-size);
+    glVertex3f(size,size,-size);
+    // bottom face
+    glColor3f(0.0,1.0,1.0);
+    glVertex3f(size,-size,size);
+    glVertex3f(-size,-size,size);
+    glVertex3f(-size,-size,-size);
+    glVertex3f(size,-size,-size);
+    glEnd();
+
+
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, size*4);
+    glTranslatef(-size/2, -size/2, -size/2);
+    glRotatef(angle,0.0,1.0,0.0);   // angle, x-axis, y-axis, z-axis
+
+    glBegin(GL_QUADS);
+    // front face
+    glColor3f(1.0,0.0,0.0);
+    glVertex3f(size,size,size);
+    glVertex3f(-size,size,size);
+    glVertex3f(-size,-size,size);
+    glVertex3f(size,-size,size);
+    // left face
+    glColor3f(0.0,1.0,0.0);
+    glVertex3f(-size,size,size);
+    glVertex3f(-size,-size,size);
+    glVertex3f(-size,-size,-size);
+    glVertex3f(-size,size,-size);
+    // back face
+    glColor3f(0.0,0.0,1.0);
+    glVertex3f(size,size,-size);
+    glVertex3f(-size,size,-size);
+    glVertex3f(-size,-size,-size);
+    glVertex3f(size,-size,-size);
+    // right face
+    glColor3f(1.0,1.0,0.0);
+    glVertex3f(size,size,size);
+    glVertex3f(size,-size,size);
+    glVertex3f(size,-size,-size);
+    glVertex3f(size,size,-size);
+    // top face
+    glColor3f(1.0,0.0,1.0);
+    glVertex3f(size,size,size);
+    glVertex3f(-size,size,size);
+    glVertex3f(-size,size,-size);
+    glVertex3f(size,size,-size);
+    // bottom face
+    glColor3f(0.0,1.0,1.0);
+    glVertex3f(size,-size,size);
+    glVertex3f(-size,-size,size);
+    glVertex3f(-size,-size,-size);
+    glVertex3f(size,-size,-size);
+    glEnd();
+
+
+    glPopMatrix();
+
     glPopMatrix();
 
     //glPushMatrix();

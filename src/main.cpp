@@ -17,6 +17,7 @@
 
 
 const Uint8 *keys;
+const Uint8 *state = SDL_GetKeyboardState(NULL);
 
 int main (int argc, char* args[]) {
     keys = SDL_GetKeyboardState(NULL);
@@ -33,6 +34,7 @@ int main (int argc, char* args[]) {
         newTime = SDL_GetTicks(); 
         delta = (float) (newTime - oldTime) / 1000;
 
+        SDL_PumpEvents();
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_TEXTINPUT) {
             }
@@ -41,6 +43,14 @@ int main (int argc, char* args[]) {
             }
             if (e.type == SDL_QUIT) {
                 app.quit = true;
+            }
+            if(e.type == SDL_MOUSEMOTION) {
+                app.mouseMoveEvent(
+                        e.motion.x,
+                        e.motion.y,
+                        e.motion.xrel,
+                        e.motion.yrel
+                        );
             }
         }
 

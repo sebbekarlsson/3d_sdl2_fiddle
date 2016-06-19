@@ -19,11 +19,21 @@ class App {
         int sceneIndex;
         SDL_Window* _display = NULL;
         SDL_Renderer* _renderer = NULL;
+        int mouseX;
+        int mouseY;
+        SDL_bool mouseTrap;
 
         App();
 
         bool init();
         bool initGL();
+        void mouseEvent(int &mouseX, int &mouseY);
+        void mouseMoveEvent(
+                int &mouseX,
+                int &mouseY,
+                int &deltaMouseX,
+                int &deltaMouseY
+                );
         Scene* getCurrentScene();
         void tick(float delta);
         void draw(float delta);
