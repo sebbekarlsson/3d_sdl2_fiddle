@@ -12,7 +12,7 @@ class Camera: public Instance {
         float lastZDirection;
 
         Camera (float x, float y, float z) : Instance(x, y, z) {
-            this->friction = 0.8f;
+            this->friction = 0.98f;
             this->dx = 0.0f;
             this->dy = 0.0f;
             this->dz = 0.0f;
@@ -24,24 +24,44 @@ class Camera: public Instance {
         }
 
         void tick(float delta) {
-            this->updatePhysics(delta);
             if (state[SDL_SCANCODE_W]) {
-                dx -= sin(this->yrot * (M_PI / 180)) * 1.5f;
-                dz -= cos(this->yrot * (M_PI / 180)) * 1.5f;
-
-                this->lastXDirection = sin(this->yrot * (M_PI / 180));
-                this->lastZDirection = cos(this->yrot * (M_PI / 180));
+                dx -= sin(this->yrot * (M_PI / 180)) * 1.3f;
+                dz -= cos(this->yrot * (M_PI / 180)) * 1.3f;
             }
-            
+            if (state[SDL_SCANCODE_S]) {
+                dx += sin(this->yrot * (M_PI / 180)) * 1.3f;
+                dz += cos(this->yrot * (M_PI / 180)) * 1.3f;
+            }
+
+            if (state[SDL_SCANCODE_A]) {
+                dx += sin((this->yrot - 90.0f) * (M_PI / 180)) * (1.3f/2.0f);
+                dz += cos((this->yrot - 90.0f) * (M_PI / 180)) * (1.3f/2.0f);
+            }
+            if (state[SDL_SCANCODE_D]) {
+                dx += sin((this->yrot + 90.0f) * (M_PI / 180)) * (1.3f/2.0f);
+                dz += cos((this->yrot + 90.0f) * (M_PI / 180)) * (1.3f/2.0f);
+            }
+
+            this->updatePhysics(delta);
         }
         void draw(float delta) {
         }
 
         void updatePhysics (float delta) {
+            this->lastXDirection = sin(this->yrot * (M_PI / 180));
+            this->lastZDirection = cos(this->yrot * (M_PI / 180));
+
+            if (lastZDirection < 0) {
+                lastZDirection = lastZDirection * -1;
+            }
+
+            if (lastXDirection < 0) {
+                lastXDirection = lastXDirection * -1;
+            }
+
             if(dx > 0){
                 if(dx - (lastXDirection * friction) < 0){
                     dx = 0;
-                    cout << "dx going 0" << endl;
                 }else{
                     dx -= lastXDirection * friction;
                 }
@@ -49,7 +69,6 @@ class Camera: public Instance {
             if(dx < 0){
                 if(dx + (lastXDirection * friction) > 0){
                     dx = 0;
-                    cout << "dx going 0" << endl;
                 }else{
                     dx += lastXDirection * friction;
                 }
@@ -73,7 +92,6 @@ class Camera: public Instance {
             if(dz > 0){
                 if(dz - (lastZDirection * friction) < 0){
                     dz = 0;
-                    cout << "dz going 0" << endl;
                 }else{
                     dz -= lastZDirection * friction;
                 }
@@ -81,12 +99,11 @@ class Camera: public Instance {
             if(dz < 0){
                 if(dz + (lastZDirection * friction) > 0){
                     dz = 0;
-                    cout << "dz going 0" << endl;
                 }else{
                     dz += lastZDirection * friction;
                 }
             }
-            
+
             x += dx * delta;
             y += dy * delta;
             z += dz * delta;

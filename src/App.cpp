@@ -175,7 +175,7 @@ void App::draw (float delta) {
     glTranslatef(-scene->camera->x, -scene->camera->y, -scene->camera->z);
     scene->draw(delta);
 
-    float size = 16.0f;
+    float size = 4.0f;
 
 
     float angle = 180.0f;
@@ -279,7 +279,7 @@ void App::draw (float delta) {
 
     glPopMatrix();
 
-    angle = -90.0f;
+    angle = -20.0f;
 
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, size*4);
