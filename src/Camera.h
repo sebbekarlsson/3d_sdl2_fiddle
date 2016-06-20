@@ -27,19 +27,31 @@ class Camera: public Instance {
             if (state[SDL_SCANCODE_W]) {
                 dx -= sin(this->yrot * (M_PI / 180)) * 1.3f;
                 dz -= cos(this->yrot * (M_PI / 180)) * 1.3f;
+
+                this->lastXDirection = sin(this->yrot * (M_PI / 180));
+                this->lastZDirection = cos(this->yrot * (M_PI / 180));
             }
             if (state[SDL_SCANCODE_S]) {
                 dx += sin(this->yrot * (M_PI / 180)) * 1.3f;
                 dz += cos(this->yrot * (M_PI / 180)) * 1.3f;
+
+                this->lastXDirection = sin(this->yrot * (M_PI / 180));
+                this->lastZDirection = cos(this->yrot * (M_PI / 180));
             }
 
             if (state[SDL_SCANCODE_A]) {
-                dx += sin((this->yrot - 90.0f) * (M_PI / 180)) * (1.3f/2.0f);
-                dz += cos((this->yrot - 90.0f) * (M_PI / 180)) * (1.3f/2.0f);
+                dx += sin((this->yrot - 90.0f) * (M_PI / 180)) * (1.3f);
+                dz += cos((this->yrot - 90.0f) * (M_PI / 180)) * (1.3f);
+
+                this->lastXDirection = sin((this->yrot - 90.0f) * (M_PI / 180));
+                this->lastZDirection = cos((this->yrot - 90.0f) * (M_PI / 180));
             }
             if (state[SDL_SCANCODE_D]) {
-                dx += sin((this->yrot + 90.0f) * (M_PI / 180)) * (1.3f/2.0f);
-                dz += cos((this->yrot + 90.0f) * (M_PI / 180)) * (1.3f/2.0f);
+                dx += sin((this->yrot + 90.0f) * (M_PI / 180)) * (1.3f);
+                dz += cos((this->yrot + 90.0f) * (M_PI / 180)) * (1.3f);
+
+                this->lastXDirection = sin((this->yrot + 90.0f) * (M_PI / 180));
+                this->lastZDirection = cos((this->yrot + 90.0f) * (M_PI / 180));
             }
 
             this->updatePhysics(delta);
@@ -48,9 +60,6 @@ class Camera: public Instance {
         }
 
         void updatePhysics (float delta) {
-            this->lastXDirection = sin(this->yrot * (M_PI / 180));
-            this->lastZDirection = cos(this->yrot * (M_PI / 180));
-
             if (lastZDirection < 0) {
                 lastZDirection = lastZDirection * -1;
             }
