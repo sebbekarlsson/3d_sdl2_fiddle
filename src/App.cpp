@@ -9,8 +9,6 @@ const int SCALE = 2;
 
 extern const Uint8 * state;
 
-float angle = 0.0;
-
 /**
  * Constructor
  */
@@ -145,7 +143,7 @@ void App::tick (float delta) {
 
     scene->tick(delta);
 
-    angle += 0.1; if(angle > 360) {angle -= 360;}
+    //angle += 0.1; if(angle > 360) {angle -= 360;}
 
     if (SDL_GetMouseState(&this->mouseX, &this->mouseY)) {
         this->mouseEvent(this->mouseX, this->mouseY);
@@ -177,8 +175,10 @@ void App::draw (float delta) {
     glTranslatef(-scene->camera->x, -scene->camera->y, -scene->camera->z);
     scene->draw(delta);
 
-    float size = 1.0f;
+    float size = 16.0f;
 
+
+    float angle = 180.0f;
 
     glPushMatrix();
 
@@ -230,6 +230,7 @@ void App::draw (float delta) {
     glPopMatrix();
 
 
+    angle = 0.0f;
 
     glPushMatrix();
     glTranslatef(-size*4, 0.0f, 0.0f);
@@ -277,6 +278,8 @@ void App::draw (float delta) {
 
 
     glPopMatrix();
+
+    angle = -90.0f;
 
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, size*4);

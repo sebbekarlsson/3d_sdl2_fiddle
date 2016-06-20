@@ -8,42 +8,50 @@ class Camera: public Instance {
         float dx, dy, dz;
         float xrot, yrot, zrot;
         float friction;
+        float lastXDirection;
+        float lastZDirection;
 
         Camera (float x, float y, float z) : Instance(x, y, z) {
-            this->friction = 3.2f;
+            this->friction = 0.8f;
             this->dx = 0.0f;
             this->dy = 0.0f;
             this->dz = 0.0f;
             this->xrot = 0.0f;
             this->yrot = 0.0f;
             this->zrot = 0.0f;
+            this->lastXDirection = 0.0f;
+            this->lastZDirection = 0.0f;
         }
 
         void tick(float delta) {
-            //z -= 0.01f;
             this->updatePhysics(delta);
-
             if (state[SDL_SCANCODE_W]) {
-                x -= sin(this->yrot * (M_PI / 180)) * 0.06f;
-                z -= cos(this->yrot * (M_PI / 180)) * 0.06f;
+                dx -= sin(this->yrot * (M_PI / 180)) * 1.5f;
+                dz -= cos(this->yrot * (M_PI / 180)) * 1.5f;
+
+                this->lastXDirection = sin(this->yrot * (M_PI / 180));
+                this->lastZDirection = cos(this->yrot * (M_PI / 180));
             }
+            
         }
         void draw(float delta) {
         }
 
         void updatePhysics (float delta) {
             if(dx > 0){
-                if(dx - friction < 0){
+                if(dx - (lastXDirection * friction) < 0){
                     dx = 0;
+                    cout << "dx going 0" << endl;
                 }else{
-                    dx -= friction;
+                    dx -= lastXDirection * friction;
                 }
             }
             if(dx < 0){
-                if(dx + friction > 0){
+                if(dx + (lastXDirection * friction) > 0){
                     dx = 0;
+                    cout << "dx going 0" << endl;
                 }else{
-                    dx += friction;
+                    dx += lastXDirection * friction;
                 }
             }
 
@@ -62,8 +70,26 @@ class Camera: public Instance {
                 }
             }
 
+            if(dz > 0){
+                if(dz - (lastZDirection * friction) < 0){
+                    dz = 0;
+                    cout << "dz going 0" << endl;
+                }else{
+                    dz -= lastZDirection * friction;
+                }
+            }
+            if(dz < 0){
+                if(dz + (lastZDirection * friction) > 0){
+                    dz = 0;
+                    cout << "dz going 0" << endl;
+                }else{
+                    dz += lastZDirection * friction;
+                }
+            }
+            
             x += dx * delta;
             y += dy * delta;
+            z += dz * delta;
         }
 
         void mouseMoveEvent(int mouseX, int mouseY, int deltaMouseX, int deltaMouseY) {
