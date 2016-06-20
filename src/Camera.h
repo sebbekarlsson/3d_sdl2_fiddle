@@ -1,4 +1,5 @@
 #pragma once
+#include "MathHelper.h"
 
 
 extern const Uint8 * state;
@@ -25,33 +26,33 @@ class Camera: public Instance {
 
         void tick(float delta) {
             if (state[SDL_SCANCODE_W]) {
-                dx -= sin(this->yrot * (M_PI / 180)) * 1.3f;
+                dx -= sin(MathHelper::toRadians(this->yrot)) * 1.3f;
                 dz -= cos(this->yrot * (M_PI / 180)) * 1.3f;
 
-                this->lastXDirection = sin(this->yrot * (M_PI / 180));
-                this->lastZDirection = cos(this->yrot * (M_PI / 180));
+                this->lastXDirection = sin(MathHelper::toRadians(this->yrot));
+                this->lastZDirection = cos(MathHelper::toRadians(this->yrot));
             }
             if (state[SDL_SCANCODE_S]) {
-                dx += sin(this->yrot * (M_PI / 180)) * 1.3f;
-                dz += cos(this->yrot * (M_PI / 180)) * 1.3f;
+                dx += sin(MathHelper::toRadians(this->yrot)) * 1.3f;
+                dz += cos(MathHelper::toRadians(this->yrot)) * 1.3f;
 
-                this->lastXDirection = sin(this->yrot * (M_PI / 180));
-                this->lastZDirection = cos(this->yrot * (M_PI / 180));
+                this->lastXDirection = sin(MathHelper::toRadians(this->yrot));
+                this->lastZDirection = cos(MathHelper::toRadians(this->yrot));
             }
 
             if (state[SDL_SCANCODE_A]) {
-                dx += sin((this->yrot - 90.0f) * (M_PI / 180)) * (1.3f);
-                dz += cos((this->yrot - 90.0f) * (M_PI / 180)) * (1.3f);
+                dx += sin(MathHelper::toRadians(this->yrot - 90.0f)) * 1.3f;
+                dz += cos(MathHelper::toRadians(this->yrot - 90.0f)) * 1.3f;
 
-                this->lastXDirection = sin((this->yrot - 90.0f) * (M_PI / 180));
-                this->lastZDirection = cos((this->yrot - 90.0f) * (M_PI / 180));
+                this->lastXDirection = sin(MathHelper::toRadians(this->yrot - 90.0f));
+                this->lastZDirection = cos(MathHelper::toRadians(this->yrot - 90.0f));
             }
             if (state[SDL_SCANCODE_D]) {
-                dx += sin((this->yrot + 90.0f) * (M_PI / 180)) * (1.3f);
-                dz += cos((this->yrot + 90.0f) * (M_PI / 180)) * (1.3f);
+                dx += sin(MathHelper::toRadians(this->yrot + 90.0f)) * 1.3f;
+                dz += cos(MathHelper::toRadians(this->yrot + 90.0f)) * 1.3f;
 
-                this->lastXDirection = sin((this->yrot + 90.0f) * (M_PI / 180));
-                this->lastZDirection = cos((this->yrot + 90.0f) * (M_PI / 180));
+                this->lastXDirection = sin(MathHelper::toRadians(this->yrot + 90.0f));
+                this->lastZDirection = cos(MathHelper::toRadians(this->yrot + 90.0f));
             }
 
             this->updatePhysics(delta);
