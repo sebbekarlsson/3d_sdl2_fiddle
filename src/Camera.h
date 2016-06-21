@@ -55,6 +55,12 @@ class Camera: public Instance {
                 this->lastZDirection = cos(MathHelper::toRadians(this->yrot + 90.0f));
             }
 
+            if (state[SDL_SCANCODE_SPACE]) {
+                if (y <= 8.0f) {
+                    dy += 50.0f;
+                }
+            }
+
             this->updatePhysics(delta);
         }
         void draw(float delta) {
@@ -84,7 +90,7 @@ class Camera: public Instance {
                 }
             }
 
-            if(dy > 0){
+            /*if(dy > 0){
                 if(dy - friction < 0){
                     dy = 0;
                 }else{
@@ -97,7 +103,7 @@ class Camera: public Instance {
                 }else{
                     dy += friction;
                 }
-            }
+            }*/
 
             if(dz > 0){
                 if(dz - (lastZDirection * friction) < 0){
@@ -111,6 +117,15 @@ class Camera: public Instance {
                     dz = 0;
                 }else{
                     dz += lastZDirection * friction;
+                }
+            }
+
+
+            if (y > 8.0f) {
+                dy -= 0.40f;
+                if (y + dy*delta < 8.0f) {
+                    y = 8.0f;
+                    dy = 0.0f;
                 }
             }
 

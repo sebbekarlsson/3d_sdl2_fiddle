@@ -38,6 +38,7 @@ bool App::initGL () {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    //gluPerspective(65.0f, (float)((WIDTH * SCALE)/(HEIGHT * SCALE)), 0.1f, 1000);
     gluPerspective(45,640.0/480.0,1.0,500.0);
     glMatrixMode(GL_MODELVIEW); 
     //glOrtho(0, (WIDTH * SCALE), (HEIGHT * SCALE), 0, 1, -1);
@@ -87,7 +88,7 @@ bool App::init () {
                 0,
                 WIDTH * SCALE,
                 HEIGHT * SCALE,
-                SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
+                SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN 
                 );
         _renderer = SDL_CreateRenderer(_display, -1, SDL_RENDERER_ACCELERATED);
 

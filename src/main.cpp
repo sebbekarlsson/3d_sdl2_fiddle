@@ -41,7 +41,7 @@ int main (int argc, char* args[]) {
             if (e.type == SDL_KEYUP) {
                 app.keyUpEvent(e);
             }
-            if (e.type == SDL_QUIT) {
+            if (e.type == SDL_QUIT || state[SDL_SCANCODE_ESCAPE]) {
                 app.quit = true;
             }
             if(e.type == SDL_MOUSEMOTION) {
