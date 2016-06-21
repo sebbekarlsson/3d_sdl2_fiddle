@@ -13,7 +13,7 @@ class Camera: public Instance {
         float lastZDirection;
 
         Camera (float x, float y, float z) : Instance(x, y, z) {
-            this->friction = 0.98f;
+            this->friction = 0.99f;
             this->dx = 0.0f;
             this->dy = 0.0f;
             this->dz = 0.0f;
@@ -26,30 +26,30 @@ class Camera: public Instance {
 
         void tick(float delta) {
             if (state[SDL_SCANCODE_W]) {
-                dx -= sin(MathHelper::toRadians(this->yrot)) * 1.3f;
-                dz -= cos(this->yrot * (M_PI / 180)) * 1.3f;
+                dx -= sin(MathHelper::toRadians(this->yrot)) * 1.2f;
+                dz -= cos(this->yrot * (M_PI / 180)) * 1.2f;
 
                 this->lastXDirection = sin(MathHelper::toRadians(this->yrot));
                 this->lastZDirection = cos(MathHelper::toRadians(this->yrot));
             }
             if (state[SDL_SCANCODE_S]) {
-                dx += sin(MathHelper::toRadians(this->yrot)) * 1.3f;
-                dz += cos(MathHelper::toRadians(this->yrot)) * 1.3f;
+                dx += sin(MathHelper::toRadians(this->yrot)) * 1.1f;
+                dz += cos(MathHelper::toRadians(this->yrot)) * 1.1f;
 
                 this->lastXDirection = sin(MathHelper::toRadians(this->yrot));
                 this->lastZDirection = cos(MathHelper::toRadians(this->yrot));
             }
 
             if (state[SDL_SCANCODE_A]) {
-                dx += sin(MathHelper::toRadians(this->yrot - 90.0f)) * 1.3f;
-                dz += cos(MathHelper::toRadians(this->yrot - 90.0f)) * 1.3f;
+                dx += sin(MathHelper::toRadians(this->yrot - 90.0f)) * 1.1f;
+                dz += cos(MathHelper::toRadians(this->yrot - 90.0f)) * 1.1f;
 
                 this->lastXDirection = sin(MathHelper::toRadians(this->yrot - 90.0f));
                 this->lastZDirection = cos(MathHelper::toRadians(this->yrot - 90.0f));
             }
             if (state[SDL_SCANCODE_D]) {
-                dx += sin(MathHelper::toRadians(this->yrot + 90.0f)) * 1.3f;
-                dz += cos(MathHelper::toRadians(this->yrot + 90.0f)) * 1.3f;
+                dx += sin(MathHelper::toRadians(this->yrot + 90.0f)) * 1.1f;
+                dz += cos(MathHelper::toRadians(this->yrot + 90.0f)) * 1.1f;
 
                 this->lastXDirection = sin(MathHelper::toRadians(this->yrot + 90.0f));
                 this->lastZDirection = cos(MathHelper::toRadians(this->yrot + 90.0f));

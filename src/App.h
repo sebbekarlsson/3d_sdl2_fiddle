@@ -1,3 +1,4 @@
+#include "SDLImageLoader.h"
 #include "MathHelper.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -23,6 +24,9 @@ class App {
         int mouseX;
         int mouseY;
         SDL_bool mouseTrap;
+        SDLImageLoader * imgLoader;
+        EasyImage * img;
+        EasyImage * img2;
 
         App();
 

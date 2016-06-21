@@ -9,6 +9,7 @@ const int SCALE = 2;
 
 extern const Uint8 * state;
 
+
 /**
  * Constructor
  */
@@ -16,7 +17,11 @@ App::App () {
     this->sceneIndex = 0;
     this->quit = false;
     this->mouseTrap = SDL_TRUE;
+    this->imgLoader = new SDLImageLoader();
+    this->img = this->imgLoader->load("res/crate.jpg");
+    this->img2 = this->imgLoader->load("res/ground.jpg");
 }
+
 
 /**
  * This function is used to initialize the openGL.
@@ -175,159 +180,447 @@ void App::draw (float delta) {
     glTranslatef(-scene->camera->x, -scene->camera->y, -scene->camera->z);
     scene->draw(delta);
 
-    float size = 4.0f;
-
-
-    float angle = 180.0f;
-
     glPushMatrix();
+    float size = 4.0f;
+    float width = size;
+    float height = size;
+    float length = size;
+    float angle = 180.0f;
+    float textureRepeat = 1.0f;
 
     glPushMatrix();
     glTranslatef(0.0f, 0.0f, 0.0f);
     glTranslatef(-size/2, -size/2, -size/2);
-    glRotatef(angle,0.0,1.0,0.0);   // angle, x-axis, y-axis, z-axis
-
-    glBegin(GL_QUADS);
-    // front face
-    glColor3f(1.0,0.0,0.0);
-    glVertex3f(size,size,size);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(size,-size,size);
-    // left face
-    glColor3f(0.0,1.0,0.0);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(-size,size,-size);
-    // back face
-    glColor3f(0.0,0.0,1.0);
-    glVertex3f(size,size,-size);
-    glVertex3f(-size,size,-size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(size,-size,-size);
-    // right face
-    glColor3f(1.0,1.0,0.0);
-    glVertex3f(size,size,size);
-    glVertex3f(size,-size,size);
-    glVertex3f(size,-size,-size);
-    glVertex3f(size,size,-size);
-    // top face
-    glColor3f(1.0,0.0,1.0);
-    glVertex3f(size,size,size);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,size,-size);
-    glVertex3f(size,size,-size);
-    // bottom face
-    glColor3f(0.0,1.0,1.0);
-    glVertex3f(size,-size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(size,-size,-size);
-    glEnd();
-
-
-    glPopMatrix();
-
-
-    angle = 0.0f;
-
+    glRotatef(angle, 0.0f, 1.0f, 0.0f);
     glPushMatrix();
-    glTranslatef(-size*4, 0.0f, 0.0f);
-    glTranslatef(-size/2, -size/2, -size/2);
-    glRotatef(angle,0.0,1.0,0.0);   // angle, x-axis, y-axis, z-axis
-
+    glColor3f(1.0f, 1.0f, 1.0f);
+    //back
+    glPushMatrix();
+    this->img->bind();
     glBegin(GL_QUADS);
-    // front face
-    glColor3f(1.0,0.0,0.0);
-    glVertex3f(size,size,size);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(size,-size,size);
-    // left face
-    glColor3f(0.0,1.0,0.0);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(-size,size,-size);
-    // back face
-    glColor3f(0.0,0.0,1.0);
-    glVertex3f(size,size,-size);
-    glVertex3f(-size,size,-size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(size,-size,-size);
-    // right face
-    glColor3f(1.0,1.0,0.0);
-    glVertex3f(size,size,size);
-    glVertex3f(size,-size,size);
-    glVertex3f(size,-size,-size);
-    glVertex3f(size,size,-size);
-    // top face
-    glColor3f(1.0,0.0,1.0);
-    glVertex3f(size,size,size);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,size,-size);
-    glVertex3f(size,size,-size);
-    // bottom face
-    glColor3f(0.0,1.0,1.0);
-    glVertex3f(size,-size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(size,-size,-size);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, 0);
+
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
     glEnd();
-
-
     glPopMatrix();
 
+    //front
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, length);
+
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, length);
+
+    glEnd();
+    glPopMatrix();
+
+    //left
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat,0);
+    glVertex3f(0, height, length);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //right
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, length);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(width, height, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //bottom
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, 0, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //top
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, height, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, height, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+
+
+    // 2
+    angle = 20.0f;
+    glPushMatrix();
+    glTranslatef(size*2, 0.0f, size*2);
+    glTranslatef(-size/2, -size/2, -size/2);
+    glRotatef(angle, 0.0f, 1.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    //back
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, 0);
+
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //front
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, length);
+
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, length);
+
+    glEnd();
+    glPopMatrix();
+
+    //left
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat,0);
+    glVertex3f(0, height, length);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //right
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, length);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(width, height, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //bottom
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, 0, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //top
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, height, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, height, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+    glPopMatrix();
+
+    // 3
     angle = -20.0f;
-
     glPushMatrix();
-    glTranslatef(0.0f, 0.0f, size*4);
+    glTranslatef(size, 0.0f, -size);
     glTranslatef(-size/2, -size/2, -size/2);
-    glRotatef(angle,0.0,1.0,0.0);   // angle, x-axis, y-axis, z-axis
-
+    glRotatef(angle, 0.0f, 1.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    //back
+    glPushMatrix();
+    this->img->bind();
     glBegin(GL_QUADS);
-    // front face
-    glColor3f(1.0,0.0,0.0);
-    glVertex3f(size,size,size);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(size,-size,size);
-    // left face
-    glColor3f(0.0,1.0,0.0);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(-size,size,-size);
-    // back face
-    glColor3f(0.0,0.0,1.0);
-    glVertex3f(size,size,-size);
-    glVertex3f(-size,size,-size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(size,-size,-size);
-    // right face
-    glColor3f(1.0,1.0,0.0);
-    glVertex3f(size,size,size);
-    glVertex3f(size,-size,size);
-    glVertex3f(size,-size,-size);
-    glVertex3f(size,size,-size);
-    // top face
-    glColor3f(1.0,0.0,1.0);
-    glVertex3f(size,size,size);
-    glVertex3f(-size,size,size);
-    glVertex3f(-size,size,-size);
-    glVertex3f(size,size,-size);
-    // bottom face
-    glColor3f(0.0,1.0,1.0);
-    glVertex3f(size,-size,size);
-    glVertex3f(-size,-size,size);
-    glVertex3f(-size,-size,-size);
-    glVertex3f(size,-size,-size);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, 0);
+
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
     glEnd();
+    glPopMatrix();
+
+    //front
+    
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, length);
+
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, length);
+
+    glEnd();
+    glPopMatrix();
+
+    //left
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat,0);
+    glVertex3f(0, height, length);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //right
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, length);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(width, height, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //bottom
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, 0, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, 0, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, 0, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, 0, 0);
+
+    glEnd();
+    glPopMatrix();
+
+    //top
+    glPushMatrix();
+    this->img->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, height, length);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(width, height, length);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(width, height, 0);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, height, 0);
+
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+
+
+
+
+    textureRepeat = 4.0f;
+    glPushMatrix();
+    glTranslatef(-10.0f, 0.0f, -10.0f);
+    glPushMatrix();
+    this->img2->bind();
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(0, 0);
+    glVertex3f(0, -2.0f, 0);
+
+    glTexCoord2f(0, textureRepeat);
+    glVertex3f(0, -2.0f, 20.0f);
+
+    glTexCoord2f(textureRepeat, textureRepeat);
+    glVertex3f(20.0f, -2.0f, 20.0f);
+
+    glTexCoord2f(textureRepeat, 0);
+    glVertex3f(20.0f, -2.0f, 0);
+
+    glEnd();
+    glPopMatrix();
+    glPopMatrix();
+
+
+
+
+
+
+
+
 
 
     glPopMatrix();
-
     glPopMatrix();
 
     //glPushMatrix();

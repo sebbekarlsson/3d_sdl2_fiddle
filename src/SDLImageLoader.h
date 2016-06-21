@@ -6,12 +6,12 @@
 
 
 class EasyImage {
-    
-    SDL_Surface * surface;
-    int mode = GL_RGB;
-    GLuint TextureID;
 
     public:
+        SDL_Surface * surface;
+        int mode = GL_RGB;
+        GLuint TextureID;
+
         EasyImage(SDL_Surface *surface) {
             this->surface = surface;
             this->TextureID = 0;
