@@ -13,7 +13,7 @@ class Camera: public Instance {
         float lastZDirection;
 
         Camera (float x, float y, float z) : Instance(x, y, z) {
-            this->friction = 0.99f;
+            this->friction = 0.75f;
             this->dx = 0.0f;
             this->dy = 0.0f;
             this->dz = 0.0f;
@@ -27,28 +27,29 @@ class Camera: public Instance {
         void tick(float delta) {
             float dir = yrot;
             float walk = 0.0f;
-
-            this->lastXDirection = sin(MathHelper::toRadians(dir));
-            this->lastZDirection = cos(MathHelper::toRadians(dir));
+            float walkspeed = 0.95f;
+            bool is_walk = false;
 
             if (state[SDL_SCANCODE_A]) {
-                walk = 1.3f; 
+                walk = walkspeed; 
                 dir += 90.0f;
 
                 this->lastXDirection = sin(MathHelper::toRadians(dir));
                 this->lastZDirection = cos(MathHelper::toRadians(dir));
+                is_walk = true;
 
             }
             if (state[SDL_SCANCODE_D]) {
-                walk = 1.3f; 
+                walk = walkspeed; 
                 dir -= 90.0f;
 
                 this->lastXDirection = sin(MathHelper::toRadians(dir));
                 this->lastZDirection = cos(MathHelper::toRadians(dir));
+                is_walk = true;
             }
 
             if (state[SDL_SCANCODE_W]) {
-                walk = 1.3f;
+                walk = walkspeed;
                 dir = yrot;
 
                 if (state[SDL_SCANCODE_A]) {
@@ -61,10 +62,11 @@ class Camera: public Instance {
 
                 this->lastXDirection = sin(MathHelper::toRadians(dir));
                 this->lastZDirection = cos(MathHelper::toRadians(dir));
+                is_walk = true;
             }
 
             if (state[SDL_SCANCODE_S]) {
-                walk = -1.3f;
+                walk = -walkspeed;
                 dir = yrot;
 
                 if (state[SDL_SCANCODE_A]) {
@@ -77,6 +79,7 @@ class Camera: public Instance {
 
                 this->lastXDirection = sin(MathHelper::toRadians(dir));
                 this->lastZDirection = cos(MathHelper::toRadians(dir));
+                is_walk = true;
             }
 
             if (state[SDL_SCANCODE_SPACE]) {
@@ -85,8 +88,10 @@ class Camera: public Instance {
                 }
             }
 
-            dx -= sin(MathHelper::toRadians(dir)) * walk;
-            dz -= cos(MathHelper::toRadians(dir)) * walk;
+            if (is_walk) {
+                dx -= sin(MathHelper::toRadians(dir)) * walk;
+                dz -= cos(MathHelper::toRadians(dir)) * walk;
+            }
 
             this->updatePhysics(delta);
         }
