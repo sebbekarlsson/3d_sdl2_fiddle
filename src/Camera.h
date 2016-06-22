@@ -25,34 +25,55 @@ class Camera: public Instance {
         }
 
         void tick(float delta) {
-            if (state[SDL_SCANCODE_W]) {
-                dx -= sin(MathHelper::toRadians(this->yrot)) * 1.2f;
-                dz -= cos(this->yrot * (M_PI / 180)) * 1.2f;
-
-                this->lastXDirection = sin(MathHelper::toRadians(this->yrot));
-                this->lastZDirection = cos(MathHelper::toRadians(this->yrot));
-            }
-            if (state[SDL_SCANCODE_S]) {
-                dx += sin(MathHelper::toRadians(this->yrot)) * 1.1f;
-                dz += cos(MathHelper::toRadians(this->yrot)) * 1.1f;
-
-                this->lastXDirection = sin(MathHelper::toRadians(this->yrot));
-                this->lastZDirection = cos(MathHelper::toRadians(this->yrot));
-            }
+            float dir = yrot;
+            float walk = 0.0f;
 
             if (state[SDL_SCANCODE_A]) {
-                dx += sin(MathHelper::toRadians(this->yrot - 90.0f)) * 1.1f;
-                dz += cos(MathHelper::toRadians(this->yrot - 90.0f)) * 1.1f;
+                walk = 1.3f; 
+                dir += 90.0f;
 
-                this->lastXDirection = sin(MathHelper::toRadians(this->yrot - 90.0f));
-                this->lastZDirection = cos(MathHelper::toRadians(this->yrot - 90.0f));
+                this->lastXDirection = sin(MathHelper::toRadians(dir));
+                this->lastZDirection = cos(MathHelper::toRadians(dir));
+
             }
             if (state[SDL_SCANCODE_D]) {
-                dx += sin(MathHelper::toRadians(this->yrot + 90.0f)) * 1.1f;
-                dz += cos(MathHelper::toRadians(this->yrot + 90.0f)) * 1.1f;
+                walk = 1.3f; 
+                dir -= 90.0f;
 
-                this->lastXDirection = sin(MathHelper::toRadians(this->yrot + 90.0f));
-                this->lastZDirection = cos(MathHelper::toRadians(this->yrot + 90.0f));
+                this->lastXDirection = sin(MathHelper::toRadians(dir));
+                this->lastZDirection = cos(MathHelper::toRadians(dir));
+            }
+
+            if (state[SDL_SCANCODE_W]) {
+                walk = 1.3f;
+                dir = yrot;
+
+                if (state[SDL_SCANCODE_A]) {
+                    dir += 90.0f/2;
+
+                }
+                if (state[SDL_SCANCODE_D]) {
+                    dir -= 90.0f/2;
+                }
+
+                this->lastXDirection = sin(MathHelper::toRadians(dir));
+                this->lastZDirection = cos(MathHelper::toRadians(dir));
+            }
+
+            if (state[SDL_SCANCODE_S]) {
+                walk = -1.3f;
+                dir = yrot;
+
+                if (state[SDL_SCANCODE_A]) {
+                    dir -= 90.0f/2;
+
+                }
+                if (state[SDL_SCANCODE_D]) {
+                    dir += 90.0f/2;
+                }
+
+                this->lastXDirection = sin(MathHelper::toRadians(dir));
+                this->lastZDirection = cos(MathHelper::toRadians(dir));
             }
 
             if (state[SDL_SCANCODE_SPACE]) {
@@ -60,6 +81,9 @@ class Camera: public Instance {
                     dy += 50.0f;
                 }
             }
+
+            dx -= sin(MathHelper::toRadians(dir)) * walk;
+            dz -= cos(MathHelper::toRadians(dir)) * walk;
 
             this->updatePhysics(delta);
         }
