@@ -28,6 +28,9 @@ class Camera: public Instance {
             float dir = yrot;
             float walk = 0.0f;
 
+            this->lastXDirection = sin(MathHelper::toRadians(dir));
+            this->lastZDirection = cos(MathHelper::toRadians(dir));
+
             if (state[SDL_SCANCODE_A]) {
                 walk = 1.3f; 
                 dir += 90.0f;
