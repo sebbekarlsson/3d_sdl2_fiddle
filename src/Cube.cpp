@@ -3,6 +3,7 @@
 Cube::Cube(float x, float y, float z) : Instance (x, y, z) {
     this->imageLoader = new SDLImageLoader();
     this->img = this->imageLoader->load("res/crate.jpg");
+    this->angle = rand() % 360 + 0;;
 }
 
 void Cube::draw(float delta) {
@@ -10,13 +11,13 @@ void Cube::draw(float delta) {
     float width = size;
     float height = size;
     float length = size;
-    float angle = 180.0f;
     float textureRepeat = 1.0f;
 
     glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 0.0f);
-    glTranslatef(-size/2, -size/2, -size/2);
+    glTranslatef(x, y, z);
     glRotatef(angle, 0.0f, 1.0f, 0.0f);
+    glTranslatef(-size/2, -size/2, -size/2);
+    
     glPushMatrix();
     glColor3f(1.0f, 1.0f, 1.0f);
     //back

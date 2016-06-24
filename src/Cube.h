@@ -9,6 +9,7 @@ class Cube: public Instance {
     public:
         SDLImageLoader * imageLoader;
         EasyImage * img;
+        float angle;
 
         Cube(float x, float y, float z);
         void draw(float delta);

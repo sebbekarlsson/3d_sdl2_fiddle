@@ -22,6 +22,7 @@ const Uint8 *state = SDL_GetKeyboardState(NULL);
 int main (int argc, char* args[]) {
     keys = SDL_GetKeyboardState(NULL);
     App app;
+    srand(time(NULL));
     app.init();
 
     app.scenes.insert(app.scenes.begin(), new TestScene());
