@@ -31,7 +31,7 @@ class Camera: public Instance {
             this->lastXDirection = 0.0f;
             this->lastZDirection = 0.0f;
             this->cameraBobSpeed = 20.0f;
-            this->bobTime = 80.0f;
+            this->bobTime = 95.0f;
             this->bobTimer = bobTime;
             this->bobUp = false;
         }
@@ -39,7 +39,7 @@ class Camera: public Instance {
         void tick(float delta) {
             float dir = yrot;
             float walk = 0.0f;
-            float walkspeed = 0.95f;
+            float walkspeed = 0.82f;
             bool is_walk = false;
 
             if (state[SDL_SCANCODE_A]) {

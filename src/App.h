@@ -26,7 +26,6 @@ class App {
         int mouseY;
         SDL_bool mouseTrap;
         SDLImageLoader * imgLoader;
-        EasyImage * img;
         EasyImage * img2;
 
         App();

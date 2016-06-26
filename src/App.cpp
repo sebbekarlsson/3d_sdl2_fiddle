@@ -23,8 +23,7 @@ App::App () {
     this->quit = false;
     this->mouseTrap = SDL_TRUE;
     this->imgLoader = new SDLImageLoader();
-    this->img = this->imgLoader->load("res/crate.jpg");
-    this->img2 = this->imgLoader->load("res/ground.jpg");
+    this->img2 = this->imgLoader->load("res/grass.jpg");
 }
 
 
@@ -44,7 +43,7 @@ bool App::initGL () {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     //gluPerspective(65.0f, (float)((WIDTH * SCALE)/(HEIGHT * SCALE)), 0.1f, 1000);
-    gluPerspective(45,640.0/480.0,1.0,500.0);
+    gluPerspective(45,640.0/(640/16*9),1.0,500.0);
     glMatrixMode(GL_MODELVIEW); 
     //glOrtho(0, (WIDTH * SCALE), (HEIGHT * SCALE), 0, 1, -1);
 
@@ -200,9 +199,9 @@ void App::draw (float delta) {
     cube3->draw(delta); 
 
 
-    textureRepeat = 4.0f;
+    textureRepeat = 10.0f;
     glPushMatrix();
-    glTranslatef(-10.0f, 0.0f, -10.0f);
+    glTranslatef(-35.0f, 0.0f, -35.0f);
     glPushMatrix();
     this->img2->bind();
     glBegin(GL_QUADS);
@@ -211,13 +210,13 @@ void App::draw (float delta) {
     glVertex3f(0, -2.0f, 0);
 
     glTexCoord2f(0, textureRepeat);
-    glVertex3f(0, -2.0f, 20.0f);
+    glVertex3f(0, -2.0f, 70.0f);
 
     glTexCoord2f(textureRepeat, textureRepeat);
-    glVertex3f(20.0f, -2.0f, 20.0f);
+    glVertex3f(70.0f, -2.0f, 70.0f);
 
     glTexCoord2f(textureRepeat, 0);
-    glVertex3f(20.0f, -2.0f, 0);
+    glVertex3f(70.0f, -2.0f, 0);
 
     glEnd();
     glPopMatrix();
