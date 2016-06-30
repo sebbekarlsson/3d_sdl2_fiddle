@@ -27,6 +27,7 @@ class App {
         SDL_bool mouseTrap;
         SDLImageLoader * imgLoader;
         EasyImage * img2;
+        EasyImage * girl_image;
 
         App();
 
