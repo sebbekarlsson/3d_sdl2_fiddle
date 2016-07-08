@@ -21,17 +21,17 @@ const Uint8 *state = SDL_GetKeyboardState(NULL);
 
 int main (int argc, char* args[]) {
     keys = SDL_GetKeyboardState(NULL);
-    App app;
+    App * app = new App();
     srand(time(NULL));
-    app.init();
+    app->init();
 
-    app.scenes.insert(app.scenes.begin(), new TestScene());
+    app->scenes.insert(app->scenes.begin(), new TestScene());
 
     SDL_Event e;
     float delta;
     int newTime;
     int oldTime = SDL_GetTicks(); 
-    while (!app.quit) {
+    while (!app->quit) {
         newTime = SDL_GetTicks(); 
         delta = (float) (newTime - oldTime) / 1000;
 
@@ -40,13 +40,13 @@ int main (int argc, char* args[]) {
             if (e.type == SDL_TEXTINPUT) {
             }
             if (e.type == SDL_KEYUP) {
-                app.keyUpEvent(e);
+                app->keyUpEvent(e);
             }
             if (e.type == SDL_QUIT || state[SDL_SCANCODE_ESCAPE]) {
-                app.quit = true;
+                app->quit = true;
             }
             if(e.type == SDL_MOUSEMOTION) {
-                app.mouseMoveEvent(
+                app->mouseMoveEvent(
                         e.motion.x,
                         e.motion.y,
                         e.motion.xrel,
@@ -55,14 +55,14 @@ int main (int argc, char* args[]) {
             }
         }
 
-        app.tick(delta);
-        app.draw(delta);
+        app->tick(delta);
+        app->draw(delta);
 
-        SDL_GL_SwapWindow(app._display);
+        SDL_GL_SwapWindow(app->_display);
         SDL_Delay(1);
         oldTime = newTime; 
     }
-    app.close();
+    app->close();
 
     return 0;
 }
