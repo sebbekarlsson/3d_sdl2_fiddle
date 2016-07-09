@@ -83,7 +83,7 @@ void Camera::tick(float delta) {
 
     if (state[SDL_SCANCODE_SPACE]) {
         if (y <= 8.0f) {
-            dy += 50.0f;
+            dy += 25.0f;
         }
     }
 
@@ -156,7 +156,7 @@ void Camera::updatePhysics(float delta) {
 
 
     if (y > 8.0f) {
-        dy -= 0.40f;
+        dy -= 0.70f;
         if (y + dy*delta < 8.0f) {
             y = 8.0f;
             dy = 0.0f;

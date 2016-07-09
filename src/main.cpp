@@ -1,5 +1,6 @@
 #include "SDLImageLoader.h"
 #include <string>
+#include <signal.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <math.h>
@@ -19,7 +20,14 @@
 const Uint8 *keys;
 const Uint8 *state = SDL_GetKeyboardState(NULL);
 
+volatile sig_atomic_t flag = 0;
+void exit_function(int sig){
+    flag = 1;
+}
+
 int main (int argc, char* args[]) {
+    signal(SIGINT, exit_function); 
+
     keys = SDL_GetKeyboardState(NULL);
     App * app = new App();
     srand(time(NULL));
@@ -60,7 +68,13 @@ int main (int argc, char* args[]) {
 
         SDL_GL_SwapWindow(app->_display);
         SDL_Delay(1);
-        oldTime = newTime; 
+        oldTime = newTime;
+
+        if(flag) {
+            app->close();
+            flag = 0;
+            return flag;
+        }
     }
     app->close();
 
