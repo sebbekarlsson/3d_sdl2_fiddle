@@ -5,3 +5,5 @@
 *.out
 *vgcore*
 *.dSYM
+res/Handgun/Handgun_FBX/
+Handgun_FBX
