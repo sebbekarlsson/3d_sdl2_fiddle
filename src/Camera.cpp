@@ -3,7 +3,7 @@
 
 Camera::Camera(float x, float y, float z) : Instance(x, y, z) {
     this->friction = 0.75f;
-    this->rotationFriction = 0.20f;
+    this->rotationFriction = 1.0f;
     this->dx = 0.0f;
     this->dy = 0.0f;
     this->dz = 0.0f;
@@ -13,8 +13,8 @@ Camera::Camera(float x, float y, float z) : Instance(x, y, z) {
     this->zrot = 0.0f;
     this->lastXDirection = 0.0f;
     this->lastZDirection = 0.0f;
-    this->cameraBobSpeed = 20.0f;
-    this->bobTime = 95.0f;
+    this->cameraBobSpeed = 30.0f;
+    this->bobTime = 30.0f;
     this->bobTimer = bobTime;
     this->bobUp = false;
 }
@@ -26,6 +26,8 @@ void Camera::tick(float delta) {
     float walk = 0.0f;
     float walkspeed = 0.82f;
     bool is_walk = false;
+     
+    this->bobTime = 60/(fabs(dx)+fabs(dz));
 
     if (state[SDL_SCANCODE_A]) {
         walk = walkspeed; 
@@ -85,9 +87,11 @@ void Camera::tick(float delta) {
         }
     }
 
-    if (is_walk) {
+    if (dx > 0 || dx < 0 || dz > 0 || dz < 0) {
         this->cameraBob(delta);
+    }
 
+    if (is_walk) {
         dx -= sin(MathHelper::toRadians(dir)) * walk;
         dz -= cos(MathHelper::toRadians(dir)) * walk;
     }
@@ -181,11 +185,15 @@ void Camera::cameraBob(float delta) {
         bobTimer -= 1.0f;
     } else {
         if (bobUp) {
-            dxrot += cameraBobSpeed;
-            bobUp = false;
+            if (dxrot == 0) {
+                dxrot += cameraBobSpeed;
+                bobUp = false;
+            }
         } else {
-            dxrot -= cameraBobSpeed;
-            bobUp = true;
+            if (dxrot == 0) {
+                dxrot -= cameraBobSpeed;
+                bobUp = true;
+            }
         }
         bobTimer = bobTime;
     }
