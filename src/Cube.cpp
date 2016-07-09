@@ -23,6 +23,7 @@ void Cube::draw(float delta) {
     glColor3f(1.0f, 1.0f, 1.0f);
     //back
     glPushMatrix();
+    glNormal3f(0.0f, 0.0f, -1.0f);
     this->img->bind();
     glBegin(GL_QUADS);
 
@@ -43,6 +44,7 @@ void Cube::draw(float delta) {
     glPopMatrix();
 
     //front
+    glNormal3f(0.0f, 0.0f, 1.0f);
     glPushMatrix();
     this->img->bind();
     glBegin(GL_QUADS);
@@ -64,6 +66,7 @@ void Cube::draw(float delta) {
     glPopMatrix();
 
     //left
+    glNormal3f(-1.0f, 0.0f, 0.0f);
     glPushMatrix();
     this->img->bind();
     glBegin(GL_QUADS);
@@ -84,6 +87,7 @@ void Cube::draw(float delta) {
     glPopMatrix();
 
     //right
+    glNormal3f(1.0f, 0.0f, 0.0f);
     glPushMatrix();
     this->img->bind();
     glBegin(GL_QUADS);
@@ -104,6 +108,7 @@ void Cube::draw(float delta) {
     glPopMatrix();
 
     //bottom
+    glNormal3f(0.0f, -1.0f, 0.0f);
     glPushMatrix();
     this->img->bind();
     glBegin(GL_QUADS);
@@ -125,6 +130,7 @@ void Cube::draw(float delta) {
     glPopMatrix();
 
     //top
+    glNormal3f(0.0f, 1.0f, 0.0f);
     glPushMatrix();
     this->img->bind();
     glBegin(GL_QUADS);

@@ -244,6 +244,7 @@ void App::draw (float delta) {
     glPushMatrix();
     glTranslatef(-35.0f, 0.0f, -35.0f);
     glPushMatrix();
+    glNormal3f(1.0f, 1.0f, 1.0f);
     this->img2->bind();
     glBegin(GL_QUADS);
 

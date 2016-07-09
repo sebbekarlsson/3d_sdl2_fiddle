@@ -24,7 +24,7 @@ void Camera::draw(float delta) {}
 void Camera::tick(float delta) {
     float dir = yrot;
     float walk = 0.0f;
-    float walkspeed = 0.82f;
+    float walkspeed = 0.95f;
     bool is_walk = false;
      
     this->bobTime = 60/(fabs(dx)+fabs(dz));
@@ -156,7 +156,7 @@ void Camera::updatePhysics(float delta) {
 
 
     if (y > 8.0f) {
-        dy -= 0.70f;
+        dy -= 0.76f;
         if (y + dy*delta < 8.0f) {
             y = 8.0f;
             dy = 0.0f;
