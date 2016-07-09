@@ -1,5 +1,10 @@
 #pragma once
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 #include "MathHelper.h"
+#include "Instance.h"
+#ifndef CAMERA_H
+#define CAMERA_H
 
 
 extern const Uint8 * state;
@@ -18,204 +23,13 @@ class Camera: public Instance {
         float bobTime;
         bool bobUp;
 
-        Camera (float x, float y, float z) : Instance(x, y, z) {
-            this->friction = 0.75f;
-            this->rotationFriction = 0.20f;
-            this->dx = 0.0f;
-            this->dy = 0.0f;
-            this->dz = 0.0f;
-            this->dxrot - 0.0f;
-            this->xrot = 0.0f;
-            this->yrot = 0.0f;
-            this->zrot = 0.0f;
-            this->lastXDirection = 0.0f;
-            this->lastZDirection = 0.0f;
-            this->cameraBobSpeed = 20.0f;
-            this->bobTime = 95.0f;
-            this->bobTimer = bobTime;
-            this->bobUp = false;
-        }
+        Camera (float x, float y, float z);
 
-        void tick(float delta) {
-            float dir = yrot;
-            float walk = 0.0f;
-            float walkspeed = 0.82f;
-            bool is_walk = false;
-
-            if (state[SDL_SCANCODE_A]) {
-                walk = walkspeed; 
-                dir += 90.0f;
-
-                this->lastXDirection = sin(MathHelper::toRadians(dir));
-                this->lastZDirection = cos(MathHelper::toRadians(dir));
-                is_walk = true;
-
-            }
-            if (state[SDL_SCANCODE_D]) {
-                walk = walkspeed; 
-                dir -= 90.0f;
-
-                this->lastXDirection = sin(MathHelper::toRadians(dir));
-                this->lastZDirection = cos(MathHelper::toRadians(dir));
-                is_walk = true;
-            }
-
-            if (state[SDL_SCANCODE_W]) {
-                walk = walkspeed;
-                dir = yrot;
-
-                if (state[SDL_SCANCODE_A]) {
-                    dir += 90.0f/2;
-
-                }
-                if (state[SDL_SCANCODE_D]) {
-                    dir -= 90.0f/2;
-                }
-
-                this->lastXDirection = sin(MathHelper::toRadians(dir));
-                this->lastZDirection = cos(MathHelper::toRadians(dir));
-                is_walk = true;
-            }
-
-            if (state[SDL_SCANCODE_S]) {
-                walk = -walkspeed;
-                dir = yrot;
-
-                if (state[SDL_SCANCODE_A]) {
-                    dir -= 90.0f/2;
-
-                }
-                if (state[SDL_SCANCODE_D]) {
-                    dir += 90.0f/2;
-                }
-
-                this->lastXDirection = sin(MathHelper::toRadians(dir));
-                this->lastZDirection = cos(MathHelper::toRadians(dir));
-                is_walk = true;
-            }
-
-            if (state[SDL_SCANCODE_SPACE]) {
-                if (y <= 8.0f) {
-                    dy += 50.0f;
-                }
-            }
-
-            if (is_walk) {
-                this->cameraBob(delta);
-
-                dx -= sin(MathHelper::toRadians(dir)) * walk;
-                dz -= cos(MathHelper::toRadians(dir)) * walk;
-            }
-
-            this->updatePhysics(delta);
-        }
-
-        void draw(float delta) {
-        }
-
-        void updatePhysics (float delta) {
-            if (lastZDirection < 0) {
-                lastZDirection = lastZDirection * -1;
-            }
-
-            if (lastXDirection < 0) {
-                lastXDirection = lastXDirection * -1;
-            }
-
-            if(dx > 0){
-                if(dx - (lastXDirection * friction) < 0){
-                    dx = 0;
-                }else{
-                    dx -= lastXDirection * friction;
-                }
-            }
-            if(dx < 0){
-                if(dx + (lastXDirection * friction) > 0){
-                    dx = 0;
-                }else{
-                    dx += lastXDirection * friction;
-                }
-            }
-
-            /*if(dy > 0){
-              if(dy - friction < 0){
-              dy = 0;
-              }else{
-              dy -= friction;
-              }
-              }
-              if(dy < 0){
-              if(dy + friction > 0){
-              dy = 0;
-              }else{
-              dy += friction;
-              }
-              }*/
-
-            if(dz > 0){
-                if(dz - (lastZDirection * friction) < 0){
-                    dz = 0;
-                }else{
-                    dz -= lastZDirection * friction;
-                }
-            }
-            if(dz < 0){
-                if(dz + (lastZDirection * friction) > 0){
-                    dz = 0;
-                }else{
-                    dz += lastZDirection * friction;
-                }
-            }
-
-
-            if(dxrot > 0){
-                if(dxrot - rotationFriction < 0){
-                    dxrot = 0;
-                }else{
-                    dxrot -= rotationFriction;
-                }
-            }
-            if(dxrot < 0){
-                if(dxrot + rotationFriction > 0){
-                    dxrot = 0;
-                }else{
-                    dxrot += rotationFriction;
-                }
-            }
-
-
-            if (y > 8.0f) {
-                dy -= 0.40f;
-                if (y + dy*delta < 8.0f) {
-                    y = 8.0f;
-                    dy = 0.0f;
-                }
-            }
-
-            x += dx * delta;
-            y += dy * delta;
-            z += dz * delta;
-
-            xrot += dxrot * delta;
-        }
-
-        void mouseMoveEvent(int mouseX, int mouseY, int deltaMouseX, int deltaMouseY) {
-            xrot -= (deltaMouseY * 0.25f);
-            yrot -= (deltaMouseX * 0.25f);
-        }
-
-        void cameraBob(float delta) {
-            if (bobTimer > 0) {
-                bobTimer -= 1.0f;
-            } else {
-                if (bobUp) {
-                    dxrot += cameraBobSpeed;
-                    bobUp = false;
-                } else {
-                    dxrot -= cameraBobSpeed;
-                    bobUp = true;
-                }
-                bobTimer = bobTime;
-            }
-        }
+        void tick(float delta);
+        void draw(float delta);
+        void updatePhysics (float delta);
+        void mouseMoveEvent(int mouseX, int mouseY, int deltaMouseX, int deltaMouseY);
+        void cameraBob(float delta);
 };
+
+#endif

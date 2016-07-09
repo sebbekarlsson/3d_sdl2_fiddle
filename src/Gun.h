@@ -6,6 +6,7 @@
 #ifndef GUN_H
 #define GUN_H
 
+
 class Gun: public Instance {
     public:
         SDLImageLoader * imageLoader;

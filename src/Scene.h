@@ -3,6 +3,8 @@
 #include <SDL2/SDL_opengl.h>
 #include "Camera.h"
 #pragma once
+#ifndef SCENE_H
+#define SCENE_H
 
 
 class Scene {
@@ -10,10 +12,7 @@ class Scene {
         Camera *camera;
         bool initialized;
 
-        Scene () {
-            this->initialized = false;
-            this->camera = new Camera(0.0f, 8.0f, 24.0f);
-        }
+        Scene();
 
         /**
          * This function is used to draw all instances in this scene.
@@ -31,6 +30,7 @@ class Scene {
         virtual void tick(float delta) = 0;
         virtual void draw(float delta) = 0;
         virtual void drawGUI(float delta) = 0;
-        //virtual void textEvent(string text) = 0;
         virtual void keyUpEvent(SDL_Event e) = 0;
 };
+
+#endif
