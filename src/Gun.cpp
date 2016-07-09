@@ -13,7 +13,7 @@ Gun::Gun(float x, float y, float z) : Instance (x, y, z) {
     this->inputfile = "res/Handgun/Handgun_Obj/Handgun_obj.obj";
     this->ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, inputfile.c_str(), NULL);
 
-    if (!err.empty()) { // `err` may contain warning message.
+    if (!err.empty()) {
         std::cerr << err << std::endl;
     }
 
