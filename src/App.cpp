@@ -16,6 +16,7 @@ Cube * cube = new Cube(0, 0, 0);
 Cube * cube1 = new Cube(0, 0, 8.0f);
 Cube * cube2 = new Cube(8.0f, 0, 0);
 Cube * cube3 = new Cube(0, 4.0f, 0);
+Gun * gun = new Gun(1.0f, -1.5f, -2.0f);
 
 std::string inputfile = "res/Police.obj";
 tinyobj::attrib_t attrib;
@@ -70,7 +71,7 @@ bool App::initGL () {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     //gluPerspective(65.0f, (float)((WIDTH * SCALE)/(HEIGHT * SCALE)), 0.1f, 1000);
-    gluPerspective(80,640.0/(640/16*9),1.0,500.0);
+    gluPerspective(80,640.0/(640/16*9),0.001f,500.0);
     glMatrixMode(GL_MODELVIEW); 
     //glOrtho(0, (WIDTH * SCALE), (HEIGHT * SCALE), 0, 1, -1);
 
@@ -200,6 +201,13 @@ void App::tick (float delta) {
             this->mouseTrap = SDL_TRUE;
         }
     }
+
+    //gun->x = getCurrentScene()->camera->x;
+    //gun->z = getCurrentScene()->camera->z;
+    //gun->y = getCurrentScene()->camera->y - 1.0f;
+    //gun->yrot = getCurrentScene()->camera->yrot + 90.0f;
+    //gun->zrot = getCurrentScene()->camera->xrot;
+    gun->tick(delta);
 }
 
 /**
@@ -209,6 +217,8 @@ void App::draw (float delta) {
     Scene * scene = this->getCurrentScene();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    gun->draw(delta); 
     glLoadIdentity();
     glPushMatrix();
     glRotatef(-scene->camera->xrot, 1.0f, 0.0f, 0.0f);
@@ -228,8 +238,7 @@ void App::draw (float delta) {
     cube->draw(delta);
     cube1->draw(delta);
     cube2->draw(delta);
-    cube3->draw(delta); 
-
+    cube3->draw(delta);
 
     textureRepeat = 10.0f;
     glPushMatrix();

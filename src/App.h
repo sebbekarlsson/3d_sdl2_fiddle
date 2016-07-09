@@ -5,6 +5,7 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include "Cube.h"
+#include "Gun.h"
 #include <vector>
 #include "Instance.h"
 #include "Camera.h"
