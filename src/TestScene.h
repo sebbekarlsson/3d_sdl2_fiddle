@@ -1,8 +1,6 @@
-#include "Instance.h"
+#include "Scene.h"
 #include "Cube.h"
 #include "Gun.h"
-#include "Camera.h"
-#include "Scene.h"
 
 
 #ifndef TESTSCENE_H

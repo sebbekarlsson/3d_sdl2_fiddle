@@ -164,13 +164,6 @@ void App::tick (float delta) {
             this->mouseTrap = SDL_TRUE;
         }
     }
-
-    //gun->x = getCurrentScene()->camera->x;
-    //gun->z = getCurrentScene()->camera->z;
-    //gun->y = getCurrentScene()->camera->y - 1.0f;
-    //gun->yrot = getCurrentScene()->camera->yrot + 90.0f;
-    //gun->zrot = getCurrentScene()->camera->xrot;
-    //gun->tick(delta);
 }
 
 /**
