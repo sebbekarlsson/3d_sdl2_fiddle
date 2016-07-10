@@ -22,7 +22,16 @@ void TestScene::drawGUI(float delta) {
 }
 
 void TestScene::initialize(float delta) {
-    this->instantiate(new Cube(0,0,0));
+    for (int i = 0; i < 10; i++) {
+        for (int ii = 0; ii < 10; ii++) {
+            if (rand() % 3 + 0 == 0) {
+                this->instantiate(new Cube(i*6,0,ii*6));
+                if (rand() % 3 + 0 == 0) {
+                    this->instantiate(new Cube(i*6,4,ii*6));
+                }
+            }
+        }
+    }
 }
 
 void TestScene::keyUpEvent(SDL_Event e) {}
