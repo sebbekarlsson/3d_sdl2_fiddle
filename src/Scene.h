@@ -1,12 +1,13 @@
+#pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_opengl.h>
 #include <vector>
 #include "Camera.h"
-#pragma once
+
+
 #ifndef SCENE_H
 #define SCENE_H
-
 
 using namespace std;
 

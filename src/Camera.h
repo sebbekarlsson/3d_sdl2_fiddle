@@ -6,7 +6,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-
 extern const Uint8 * state;
 class Camera: public Instance {
     public:
