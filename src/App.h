@@ -4,6 +4,7 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <vector>
+#include "Camera.h"
 #include "Scene.h"
 
 
