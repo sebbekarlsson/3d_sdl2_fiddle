@@ -12,7 +12,7 @@ void Scene::instantiate(Instance * instance) {
 
 void Scene::tickInstances(float delta) {
     Instance *instance;
-    for (instanceIter = instances.begin() ; instanceIter != instances.end(); instanceIter++) {
+    foreach(instanceIter, instances) {
         instance = &**instanceIter;
         instance->tick(delta);
     }
@@ -20,7 +20,7 @@ void Scene::tickInstances(float delta) {
 
 void Scene::drawInstances(float delta) {
     Instance *instance;
-    for (instanceIter = instances.begin() ; instanceIter != instances.end(); instanceIter++) {
+    foreach (instanceIter, instances) {
         instance = &**instanceIter;
         instance->draw(delta);
     }
