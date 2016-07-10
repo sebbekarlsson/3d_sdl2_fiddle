@@ -1,5 +1,6 @@
 FLAGZ = `pkg-config --libs sdl2` -lGL -lglut -lSDL2_image -lSDL2_ttf -lGLU -g
 
+
 output: src/main.o src/App.o src/Camera.o src/Cube.o src/Gun.o src/Instance.o src/MathHelper.o src/Scene.o src/TestScene.o
 	g++ $(FLAGZ) src/main.o src/App.o src/Camera.o src/Cube.o src/Gun.o src/Instance.o src/MathHelper.o src/Scene.o src/TestScene.o -o sdl2fiddle
 
@@ -32,10 +33,3 @@ TestScene.o: src/TestScene.cpp src/TestScene.h
 
 clean:
 	rm src/*.o
-
-FLAGS_OPENGL	= -lglut
-
-#g++ src/main.cpp src/MathHelper.cpp src/Instance.cpp src/Camera.cpp src/Scene.cpp src/Gun.cpp src/Cube.cpp src/TestScene.cpp src/App.cpp `pkg-config --libs sdl2` -lGL -lglut -lSDL2_image -lSDL2_ttf -lGLU -g
-#./a.out
-#target: dependencies
-#	action
