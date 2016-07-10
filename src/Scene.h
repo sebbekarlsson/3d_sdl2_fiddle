@@ -14,11 +14,14 @@ class Scene {
     public:
         Camera *camera;
         bool initialized;
-        std::vector<Instance *> instances;
+        std::vector<Instance*> instances;
+        std::vector<Instance*>::iterator instanceIter;
 
         Scene();
 
         void instantiate(Instance * instance);
+        void tickInstances(float delta);
+        void drawInstances(float delta);
 
         virtual void initialize(float delta) = 0;
         virtual void tick(float delta) = 0;

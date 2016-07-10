@@ -1,4 +1,6 @@
 #include "Instance.h"
+#include "Cube.h"
+#include "Gun.h"
 #include "Camera.h"
 #include "Scene.h"
 
@@ -8,6 +10,7 @@
 
 class TestScene: public Scene {
     public:
+        Instance * handHeld;
         TestScene();
         void tick (float delta);
         void initialize(float delta);

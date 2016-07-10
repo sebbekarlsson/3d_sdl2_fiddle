@@ -10,42 +10,10 @@ const int HEIGHT = WIDTH / 16 * 9;
 const int SCALE = 2;
 
 extern const Uint8 * state;
-
-
-Cube * cube = new Cube(0, 0, 0);
-Cube * cube1 = new Cube(0, 0, 8.0f);
-Cube * cube2 = new Cube(8.0f, 0, 0);
-Cube * cube3 = new Cube(0, 4.0f, 0);
-Gun * gun = new Gun(1.0f, -1.5f, -2.0f);
-
-std::string inputfile = "res/Police.obj";
-tinyobj::attrib_t attrib;
-std::vector<tinyobj::shape_t> shapes;
-std::vector<tinyobj::material_t> materials;
-
-float man_angle;
-
-std::string err;
-
-bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, inputfile.c_str(), NULL);
-
 /**
  * Constructor
  */
 App::App () {
-    
-
-    if (!err.empty()) { // `err` may contain warning message.
-        std::cerr << err << std::endl;
-    }
-
-    if (!ret) {
-        exit(1);
-    }
-
-    std::cout << "# of shapes    : " << shapes.size() << std::endl;
-    std::cout << "# of materials : " << materials.size() << std::endl;
-
     this->sceneIndex = 0;
     this->quit = false;
     this->mouseTrap = SDL_TRUE;
@@ -74,8 +42,6 @@ bool App::initGL () {
     gluPerspective(80,640.0/(640/16*9),0.001f,500.0);
     glMatrixMode(GL_MODELVIEW); 
     //glOrtho(0, (WIDTH * SCALE), (HEIGHT * SCALE), 0, 1, -1);
-
-
 
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
@@ -177,7 +143,6 @@ void App::mouseMoveEvent(
  * Tick/Update function.
  */
 void App::tick (float delta) {
-    man_angle += 0.1f;
     Scene * scene = getCurrentScene();
     if (scene->initialized == false) {
         scene->initialize(delta);
@@ -185,8 +150,6 @@ void App::tick (float delta) {
     }
 
     scene->tick(delta);
-
-    //angle += 0.1; if(angle > 360) {angle -= 360;}
 
     if (SDL_GetMouseState(&this->mouseX, &this->mouseY)) {
         this->mouseEvent(this->mouseX, this->mouseY);
@@ -207,7 +170,7 @@ void App::tick (float delta) {
     //gun->y = getCurrentScene()->camera->y - 1.0f;
     //gun->yrot = getCurrentScene()->camera->yrot + 90.0f;
     //gun->zrot = getCurrentScene()->camera->xrot;
-    gun->tick(delta);
+    //gun->tick(delta);
 }
 
 /**
@@ -218,144 +181,38 @@ void App::draw (float delta) {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    gun->draw(delta); 
+    scene->drawGUI(delta);
     glLoadIdentity();
     glPushMatrix();
     glRotatef(-scene->camera->xrot, 1.0f, 0.0f, 0.0f);
     glRotatef(-scene->camera->yrot, 0.0f, 1.0f, 0.0f);
     glRotatef(-scene->camera->zrot, 0.0f, 0.0f, 1.0f);
     glTranslatef(-scene->camera->x, -scene->camera->y, -scene->camera->z);
+    glPushMatrix();
     scene->draw(delta);
 
-    glPushMatrix();
-    float size = 4.0f;
-    float width = size;
-    float height = size;
-    float length = size;
-    float angle = 180.0f;
-    float textureRepeat = 1.0f;
+    GLfloat materialColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat materialSpecular[] = { 1.0, 1.0, 1.0, 2.0 };
+    GLfloat materialEmission[] = {0.0f,0.0f,0.0f, 1.0f};
 
-    cube->draw(delta);
-    cube1->draw(delta);
-    cube2->draw(delta);
-    cube3->draw(delta);
+    GLfloat shininess = 60;
 
-    textureRepeat = 10.0f;
-    glPushMatrix();
-    glTranslatef(-35.0f, 0.0f, -35.0f);
-    glPushMatrix();
-    glNormal3f(1.0f, 1.0f, 1.0f);
-    this->img2->bind();
-    glBegin(GL_QUADS);
+    GLfloat ambientLight[] = {0.4f, 0.4f, 0.4f, 1.0f};
+    GLfloat lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat lightColor2[] = {0.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat lightPos[] = { 1.0, 1.0, 1.0, 0.0 };
 
-    glTexCoord2f(0, 0);
-    glVertex3f(0, -2.0f, 0);
+    GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
 
-    glTexCoord2f(0, textureRepeat);
-    glVertex3f(0, -2.0f, 70.0f);
-
-    glTexCoord2f(textureRepeat, textureRepeat);
-    glVertex3f(70.0f, -2.0f, 70.0f);
-
-    glTexCoord2f(textureRepeat, 0);
-    glVertex3f(70.0f, -2.0f, 0);
-
-    glEnd();
-    glPopMatrix();
-    glPopMatrix();
-
-    //The color of the sphere
-GLfloat materialColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-//The specular (shiny) component of the material
-GLfloat materialSpecular[] = { 1.0, 1.0, 1.0, 2.0 };
-//The color emitted by the material
-GLfloat materialEmission[] = {0.0f,0.0f,0.0f, 1.0f};
-
-GLfloat shininess = 60;
-
-GLfloat ambientLight[] = {0.4f, 0.4f, 0.4f, 1.0f};
-GLfloat lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-GLfloat lightColor2[] = {0.0f, 0.0f, 0.0f, 1.0f};
-GLfloat lightPos[] = { 1.0, 1.0, 1.0, 0.0 };
-
-GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
-
-/*glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
-
-
-//Diffuse (non-shiny) light component
-glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor2);
-//Specular (shiny) light component
-glLightfv(GL_LIGHT0, GL_SPECULAR, lightColor);
-glLightfv(GL_LIGHT0, GL_POSITION, lightPos);*/
-
-glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-
-
-
-    
-    glTranslatef(14.0f, -1.5f, 0.0f);
-    glRotatef(man_angle, 0.0f, 1.0f, 0.0f);
-    glScalef(0.15f, 0.15f, 0.15f);
-    glPushMatrix();
-    this->girl_image->bind();
-    glBegin(GL_TRIANGLES);
-    // Loop over shapes
-    for (size_t s = 0; s < shapes.size(); s++) {
-        // Loop over faces(polygon)
-        size_t index_offset = 0;
-        for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-            int fv = shapes[s].mesh.num_face_vertices[f];
-
-            // Loop over vertices in the face.
-            for (size_t v = 0; v < fv; v++) {
-                // access to vertex
-                tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
-                float vx = attrib.vertices[3*idx.vertex_index+0];
-                float vy = attrib.vertices[3*idx.vertex_index+1];
-                float vz = attrib.vertices[3*idx.vertex_index+2];
-                float nx = attrib.normals[3*idx.normal_index+0];
-                float ny = attrib.normals[3*idx.normal_index+1];
-                float nz = attrib.normals[3*idx.normal_index+2];
-                float tx = attrib.texcoords[2*idx.texcoord_index+0];
-                float ty = attrib.texcoords[2*idx.texcoord_index+1];
-               
-                glNormal3f(nx, ny, nz); 
-                glTexCoord2f(tx, ty);
-                glVertex3f(vx, vy, vz);
-            }
-            index_offset += fv;
-
-                glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, materialColor);
-glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, materialSpecular);
-glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, materialEmission);
-glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess); //The shininess parameter
-            shapes[s].mesh.material_ids[f];
-        }
-    }
-    glEnd();
-    glPopMatrix();
-
-
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
     glPopMatrix();
-    glPopMatrix();
-
-    //glPushMatrix();
-    //glTranslatef(0.0f, 0.0f, -0.4f);
-    //scene->drawGUI(delta);
-    //glPopMatrix();
-
-    //glPushMatrix();
-    //scene->camera->draw(delta);
-    //glPopMatrix();
 }
 
 /**

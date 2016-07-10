@@ -9,3 +9,19 @@ Scene::Scene () {
 void Scene::instantiate(Instance * instance) {
     this->instances.push_back(instance);
 }
+
+void Scene::tickInstances(float delta) {
+    Instance *instance;
+    for (instanceIter = instances.begin() ; instanceIter != instances.end(); instanceIter++) {
+        instance = &**instanceIter;
+        instance->tick(delta);
+    }
+}
+
+void Scene::drawInstances(float delta) {
+    Instance *instance;
+    for (instanceIter = instances.begin() ; instanceIter != instances.end(); instanceIter++) {
+        instance = &**instanceIter;
+        instance->draw(delta);
+    }
+}
